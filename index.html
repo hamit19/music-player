@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Hamid Hassani">
+    <script src="https://kit.fontawesome.com/519a83532f.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="./style.css">
+    <title>Music Player</title>
+</head>
+<body>
+    
+    <main>
+       <div class="title-wrapper" >
+        <h1 id="title" >My Music Name!</h1>
+        <h3 class="singer-name"> singer's name </h3>
+       </div>
+        <div id="image-wrapper" >
+            <img id="music-cover" src="./images/image-1.jpg" alt="musics cover">
+        </div>
+
+       <div class="progress-bar-wrapper">
+            <div class="time-wrapper" >
+                <div class="duration-time" >
+                    <span>0 : 00</span>
+                </div>
+                <div class="current-music-time" >
+                    <span>0 : 00</span>
+                </div>
+            </div>
+           <div id="music-time-wrapper">
+               <div class="music-time">
+                    <span class="range-time-value" ></span>
+                </div>
+           </div>
+       </div>
+
+        <div class="btns-main-wrapper">
+            <div id="per-btn" class="btn-wrapper">
+                <i class="fa-solid fa-caret-left"></i>
+            </div>
+            <div id="play-btn"  class="btn-wrapper">
+                <i class="fa-solid fa-play"></i>
+            </div>
+            <div id="next-btn" class="btn-wrapper">
+                <i class="fa-solid fa-caret-right"></i>
+            </div>
+        </div>
+
+    </main>
+
+    <script src="./script.js" ></script>
+</body>
+</html>
