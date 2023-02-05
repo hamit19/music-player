@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="author" content="Hamid Hassani" />
+    <script
+      src="https://kit.fontawesome.com/519a83532f.js"
+      crossorigin="anonymous"
+    ></script>
+    <title>Music Player</title>
+  </head>
+  <body>
+    <main>
+      <!-- musics List start -->
+      <div class="menu-wrapper">
+        <i class="fa-solid fa-bars"></i>
+      </div>
+      <div class="music-list-wrapper">
+        <div class="music-list-header"></div>
+        <ul></ul>
+      </div>
+      <!-- musics List end -->
+
+      <!-- title start -->
+      <div class="title-wrapper">
+        <h1 id="title">My Music Name!</h1>
+        <h3 class="singer-name">singer's name</h3>
+      </div>
+      <!-- title end -->
+
+      <!-- music cover start -->
+      <div id="image-wrapper">
+        <img
+          id="music-cover"
+          src="data:image/jpeg;base64,ZXhwb3J0IGRlZmF1bHQgX193ZWJwYWNrX3B1YmxpY19wYXRoX18gKyAiOTUxMjllYjI3NmQ4ZmYyMjY5YzRhMmZkYWIzYTYwMjEuanBnIjs="
+          alt="musics cover"
+        />
+      </div>
+      <!-- music cover end -->
+
+      <!-- music time progress start -->
+      <div class="progress-bar-wrapper">
+        <div class="time-wrapper">
+          <div class="duration-time">
+            <span>0 : 00</span>
+          </div>
+          <div class="current-music-time">
+            <span>0 : 00</span>
+          </div>
+        </div>
+        <div id="music-time-wrapper">
+          <div class="music-time">
+            <span class="range-time-value"></span>
+          </div>
+        </div>
+      </div>
+      <!-- music time progress end -->
+
+      <!-- music controls start -->
+      <div class="btns-main-wrapper">
+        <div id="per-btn" class="btn-wrapper">
+          <i class="fa-solid fa-caret-left"></i>
+        </div>
+        <div id="play-btn" class="btn-wrapper">
+          <i class="fa-solid fa-play"></i>
+        </div>
+        <div id="next-btn" class="btn-wrapper">
+          <i class="fa-solid fa-caret-right"></i>
+        </div>
+      </div>
+
+      <!-- music controls end -->
+    </main>
+
+    <script src="./index.js" type="module"></script>
+  </body>
+</html>
