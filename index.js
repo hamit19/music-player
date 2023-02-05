@@ -1,77 +1,90 @@
 const songs = [
   {
+    id: 1,
     name: "Lonely",
     cover: "./images/lonely.jpg",
     singer: "Imagine Dragons",
     audio: new Audio("./music/Lonely.mp3"),
   },
   {
+    id: 2,
     name: "Memories",
     cover: "./images/Memories.jpg",
     singer: "Rauf & Faik",
     audio: new Audio("./music/Memories.mp3"),
   },
   {
+    id: 3,
     name: "I Don't Wanna Talk",
     cover: "./images/IDon'tWannaTalk.jpg",
     singer: "Besomorph",
     audio: new Audio("./music/I-Dont-Wanna-Talk.mp3"),
   },
   {
+    id: 4,
     name: "Bossa Nova",
     singer: "Bilie Eilish",
     cover: "images/billi.jpg",
     audio: new Audio("./music/song1.mp3"),
   },
   {
+    id: 5,
     name: "Yanginlar",
     singer: "Canby & Wolker",
     cover: "images/image6.jpg",
     audio: new Audio("./music/song2.mp3"),
   },
   {
+    id: 6,
     name: "Therefore I Am",
     singer: "Bilie Eilish",
     cover: "images/image1.jpg",
     audio: new Audio("./music/song3.mp3"),
   },
   {
+    id: 7,
     name: "ty moy kayf",
     singer: "Detka",
     cover: "images/image3.jpg",
     audio: new Audio("./music/song4.mp3"),
   },
   {
+    id: 8,
     name: "BonBon",
     singer: "Era Istrefi",
     cover: "images/image9.jpg",
     audio: new Audio("./music/song5.mp3"),
   },
   {
+    id: 9,
     name: " Kaç İstersen",
     singer: "Narkoz & Gazapizm",
     cover: "images/image5.jpg",
     audio: new Audio("./music/song6.mp3"),
   },
   {
+    id: 10,
     name: "Love Your Vice",
     singer: "JONY",
     cover: "images/image7.jpg",
     audio: new Audio("./music/song7.mp3"),
   },
   {
-    name: "Фонтанчик с Дельфином",
+    id: 11,
+    name: "Фонтанчик",
     singer: "Гио Пика",
     cover: "images/image4.jpg",
-    audio: new Audio("./music/song8.mp3"),
-  },
-  {
-    name: "Dance monkey",
-    singer: "Tones and I",
-    cover: "images/image8.jpg",
     audio: new Audio("./music/song9.mp3"),
   },
   {
+    id: 12,
+    name: "Dance monkey",
+    singer: "Tones and I",
+    cover: "images/image8.jpg",
+    audio: new Audio("./music/song8.mp3"),
+  },
+  {
+    id: 13,
     name: "Childhood",
     singer: "Rauf & faik",
     cover: "images/image2.jpg",
@@ -90,6 +103,9 @@ const rangeValue = document.querySelector(".range-time-value");
 const durationTime = document.querySelector(".duration-time");
 const currentMusicTime = document.querySelector(".current-music-time");
 const singerName = document.querySelector(".title-wrapper h3");
+const menuBtn = document.querySelector(".menu-wrapper");
+const musicList = document.querySelector(".music-list-wrapper");
+const ul = document.querySelector(".music-list-wrapper ul");
 
 let setBoxShadowInterval;
 let setCoverAnimationInterval;
@@ -104,14 +120,44 @@ musicName.innerText = songs[currentMusic].name;
 
 singerName.innerText = songs[currentMusic].singer;
 
+document.addEventListener("DOMContentLoaded", () => {
+  loadListMusic();
+
+  const musicsList = document.querySelectorAll(".single-music-li");
+
+  const convertedMusicList = [...musicsList];
+
+  convertedMusicList.forEach((music) => {
+    music.addEventListener("click", (e) => {
+      let id = e.target.getAttribute("data-id");
+
+      palyMusicOfList(parseInt(id));
+    });
+  });
+});
+
+menuBtn.addEventListener("click", () => {
+  if (!musicList.classList.contains("active")) {
+    musicList.classList.add("active");
+    menuBtn.style.backgroundColor = "#1e293b";
+  } else {
+    musicList.classList.remove("active");
+    menuBtn.style.backgroundColor = "#0f172a";
+  }
+});
+
 audio.addEventListener("canplay", () => {
-  range.max = audio.duration;
+  // range.max = audio.duration;
   updateDurationTime();
 });
 
 audio.addEventListener("timeupdate", (e) => {
   updateLineTime(e);
   updateCurrentTime(e);
+
+  if (audio.currentTime == audio.duration) {
+    changeMusic("next");
+  }
 });
 
 range.addEventListener("click", (e) => {
@@ -152,14 +198,7 @@ nextBtn.addEventListener("click", () => {
 });
 
 function changeMusic(state) {
-  audio.pause();
-  range.value = 0;
-  playBtn.innerHTML = `<i class="fa-solid fa-pause"></i>`;
-
-  clearInterval(setBoxShadowInterval);
-  clearInterval(setCoverAnimationInterval);
-
-  audio.currentTime = 0;
+  resetData();
 
   if (state == "next") {
     if (currentMusic == songs.length - 1) {
@@ -171,24 +210,7 @@ function changeMusic(state) {
     } else currentMusic -= 1;
   }
 
-  audio = songs[currentMusic].audio;
-
-  musicCover.src = songs[currentMusic].cover;
-
-  musicName.innerText = songs[currentMusic].name;
-
-  singerName.innerText = songs[currentMusic].singer;
-
-  setBoxShadowInterval = setInterval(setBoxShadow, 1000);
-
-  setCoverAnimationInterval = setInterval(setCoverAnimation, 80);
-
-  audio.addEventListener("timeupdate", (e) => {
-    updateLineTime(e);
-    updateCurrentTime(e);
-  });
-
-  updateDurationTime();
+  setMusicInfo();
 
   audio.play();
 }
@@ -220,8 +242,21 @@ function updateDurationTime() {
   durationTime.innerHTML = `${totalMin} : ${totalSec}`;
 }
 
+function durationMusicTime(audio) {
+  let audioDuration = audio.duration;
+
+  let totalMin = Math.floor(audioDuration / 60);
+
+  let totalSec = Math.floor(audioDuration % 60);
+
+  if (totalSec < 10) {
+    totalSec = `0${totalSec}`;
+  }
+
+  return { totalMin, totalSec };
+}
+
 function updateCurrentTime(e) {
-  console.log(e);
   //update playing song current time
   let currentTime = e.target.currentTime;
 
@@ -237,8 +272,6 @@ function updateCurrentTime(e) {
 }
 
 function updatePlayingSongCurrentTime(e) {
-  console.log(e);
-
   let progressWidth = range.clientWidth;
 
   let clickedOffsetX = e.offsetX;
@@ -285,4 +318,83 @@ function updateColor() {
   }
 
   return color;
+}
+
+function loadListMusic() {
+  songs.forEach((song) => {
+    const li = document.createElement("li");
+    const div = document.createElement("div");
+    const h5 = document.createElement("h5");
+    const h6 = document.createElement("h6");
+    const span = document.createElement("span");
+
+    h5.innerText = song.name;
+    h6.innerText = song.singer;
+
+    li.setAttribute("data-id", song.id);
+    li.className = "single-music-li";
+
+    div.className = "song-info-wrapper";
+    div.appendChild(h5);
+    div.appendChild(h6);
+
+    song.audio.addEventListener("canplay", () => {
+      const { totalMin, totalSec } = durationMusicTime(song.audio);
+
+      span.innerHTML = `${totalMin} : ${totalSec}`;
+    });
+
+    li.appendChild(div);
+    li.appendChild(span);
+    ul.appendChild(li);
+  });
+}
+
+function palyMusicOfList(id) {
+  resetData();
+
+  const index = songs.findIndex((song) => song.id === id);
+
+  currentMusic = index;
+
+  setMusicInfo();
+
+  audio.play();
+}
+
+function resetData() {
+  audio.pause();
+
+  audio.currentTime = 0;
+
+  range.value = 0;
+
+  playBtn.innerHTML = `<i class="fa-solid fa-pause"></i>`;
+
+  clearInterval(setBoxShadowInterval);
+  clearInterval(setCoverAnimationInterval);
+}
+
+function setMusicInfo() {
+  audio = songs[currentMusic].audio;
+
+  musicCover.src = songs[currentMusic].cover;
+
+  musicName.innerText = songs[currentMusic].name;
+
+  singerName.innerText = songs[currentMusic].singer;
+
+  setBoxShadowInterval = setInterval(setBoxShadow, 1000);
+
+  setCoverAnimationInterval = setInterval(setCoverAnimation, 80);
+
+  audio.addEventListener("timeupdate", (e) => {
+    updateLineTime(e);
+    updateCurrentTime(e);
+    if (audio.currentTime === audio.duration) {
+      changeMusic("next");
+    }
+  });
+
+  updateDurationTime();
 }
