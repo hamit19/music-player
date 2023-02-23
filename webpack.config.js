@@ -11,10 +11,20 @@ module.exports = {
 
   optimization: {
     minimize: true,
+    splitChunks: {
+      cacheGroups: {
+        commons: {
+          test: / [\\/]node_modules[\\/] /,
+          name: "vendor",
+          chunks: "initial",
+        },
+      },
+    },
   },
 
   entry: {
     app: path.resolve(__dirname, "src/index.js"),
+    vendor: [path.join(__dirname, "src/musics.js")],
   },
 
   output: {
@@ -52,6 +62,7 @@ module.exports = {
       },
       {
         test: /\.mp3$/,
+        // include: /assets/,
         loader: "file-loader",
       },
     ],
